@@ -1,17 +1,17 @@
 import { relations } from "drizzle-orm";
-import { integer, text, boolean, pgTable, timestamp } from "drizzle-orm/pg-core";
+import { integer, text, boolean, pgTable, timestamp, serial } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
-  id: integer("id").primaryKey(),
+  id: serial("id").primaryKey(),
   name: text("name").notNull(),
-  email: text("email").notNull(),
+  email: text("email").notNull().unique(),
 });
 
 export const posts = pgTable("posts", {
-  id: integer("id").primaryKey(),
+  id: serial("id").primaryKey(),
   title: text("title").notNull(),
   content: text("content").notNull(),
-  authorId: integer("author_id").references(() => users.id),
+  authorEmail: text("author_email").references(() => users.email),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
   published: boolean("published").default(false).notNull(),
@@ -20,7 +20,7 @@ export const posts = pgTable("posts", {
 // Create relationships
 export const postsRelations = relations(posts, ({ one }) => ({
   author: one(users, {
-    fields: [posts.authorId],
-    references: [users.id],
+    fields: [posts.authorEmail],
+    references: [users.email],
   }),
 }));
