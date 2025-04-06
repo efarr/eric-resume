@@ -20,15 +20,17 @@ export async function createPost(formData: FormData) {
   const content = formData.get("content") as string;
   const published = formData.has("published");
   const authorEmail = formData.get("authorEmail") as string;
+  const slug = formData.get("slug") as string;
 
-  if (!title || !content || !authorEmail) {
-    throw new Error("Title, content, and author are required");
+  if (!title || !content || !authorEmail || !slug) {
+    throw new Error("Title, content, slug, and author are required");
   }
 
   try {
     await db.insert(posts).values({
       title,
       content,
+      slug,
       authorEmail,
       published,
     });
@@ -37,7 +39,7 @@ export async function createPost(formData: FormData) {
     return { success: true };
   } catch (error) {
     console.error("Error creating post:", error);
-    throw new Error("Failed to create post");
+    throw new Error(`Error creating post: ${error}`);
   }
 }
 
@@ -46,9 +48,10 @@ export async function updatePost(postId: number, formData: FormData) {
   const title = formData.get("title") as string;
   const content = formData.get("content") as string;
   const published = formData.has("published");
+  const slug = formData.get("slug") as string;
 
-  if (!title || !content) {
-    throw new Error("Title and content are required");
+  if (!title || !content || !slug) {
+    throw new Error("Title, content, and slug are required");
   }
 
   try {
@@ -56,6 +59,7 @@ export async function updatePost(postId: number, formData: FormData) {
       .set({
         title,
         content,
+        slug,
         published,
         updatedAt: new Date()
       })
@@ -65,7 +69,7 @@ export async function updatePost(postId: number, formData: FormData) {
     return { success: true };
   } catch (error) {
     console.error("Error updating post:", error);
-    throw new Error("Failed to update post");
+    throw new Error(`Error updating post: ${error}`);
   }
 }
 

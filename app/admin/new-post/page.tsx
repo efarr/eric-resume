@@ -6,6 +6,16 @@ import { useState, useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { Post } from '@/types/postType'
 
+// Function to generate a slug from a title
+const generateSlug = (title: string): string => {
+  return title
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+};
+
 export default function PostFormPage() {
   const { isLoaded, user } = useUser()
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -13,6 +23,8 @@ export default function PostFormPage() {
   const [success, setSuccess] = useState(false)
   const [post, setPost] = useState<Post | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [title, setTitle] = useState('')
+  const [slug, setSlug] = useState('')
   
   const searchParams = useSearchParams()
   const postId = searchParams.get('id')
@@ -27,6 +39,8 @@ export default function PostFormPage() {
         .then((data) => {
           if (data) {
             setPost(data)
+            setTitle(data.title || '')
+            setSlug(data.slug || generateSlug(data.title || ''))
           } else {
             setError('Post not found')
           }
@@ -41,6 +55,18 @@ export default function PostFormPage() {
     }
   }, [postId])
 
+  // Generate slug when title changes
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newTitle = e.target.value;
+    setTitle(newTitle);
+    setSlug(generateSlug(newTitle));
+  };
+
+  // Handle manual slug changes
+  const handleSlugChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSlug(e.target.value);
+  };
+
   async function handleSubmit(formData: FormData) {
     if (!user) {
       setError('You must be logged in to manage posts')
@@ -51,6 +77,9 @@ export default function PostFormPage() {
     setError(null)
     
     try {
+      // Add slug to form data
+      formData.set('slug', slug);
+      
       if (isEditMode && postId) {
         // Update existing post
         await updatePost(Number(postId), formData)
@@ -114,10 +143,29 @@ export default function PostFormPage() {
             type="text"
             id="title"
             name="title"
-            defaultValue={post?.title || ''}
+            value={title}
+            onChange={handleTitleChange}
             className="w-full px-3 py-2 border rounded-md"
             required
           />
+        </div>
+
+        <div>
+          <label htmlFor="slug" className="block text-sm font-medium mb-1">
+            Slug
+          </label>
+          <input
+            type="text"
+            id="slug"
+            name="slug"
+            value={slug}
+            onChange={handleSlugChange}
+            className="w-full px-3 py-2 border rounded-md"
+            required
+          />
+          <p className="text-xs text-gray-500 mt-1">
+            URL-friendly version of the title. Auto-generated, but you can edit it.
+          </p>
         </div>
 
         <div>
