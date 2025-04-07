@@ -5,8 +5,8 @@ import { useUser } from '@clerk/nextjs'
 import { useState, useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { Post } from '@/types/postType'
+import ReactMarkdown from 'react-markdown'
 
-// Function to generate a slug from a title
 const generateSlug = (title: string): string => {
   return title
     .toLowerCase()
@@ -25,13 +25,14 @@ export default function PostFormPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [title, setTitle] = useState('')
   const [slug, setSlug] = useState('')
+  const [content, setContent] = useState('')
+  const [activeTab, setActiveTab] = useState<'markdown' | 'preview'>('markdown')
   
   const searchParams = useSearchParams()
   const postId = searchParams.get('id')
   const isEditMode = Boolean(postId)
   const router = useRouter()
 
-  // Fetch post data if editing
   useEffect(() => {
     if (postId) {
       setIsLoading(true)
@@ -41,6 +42,7 @@ export default function PostFormPage() {
             setPost(data)
             setTitle(data.title || '')
             setSlug(data.slug || generateSlug(data.title || ''))
+            setContent(data.content || '')
           } else {
             setError('Post not found')
           }
@@ -67,6 +69,12 @@ export default function PostFormPage() {
     setSlug(e.target.value);
   };
 
+  // Handle content changes
+  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const markdown = e.target.value;
+    setContent(markdown);
+  };
+
   async function handleSubmit(formData: FormData) {
     if (!user) {
       setError('You must be logged in to manage posts')
@@ -77,8 +85,9 @@ export default function PostFormPage() {
     setError(null)
     
     try {
-      // Add slug to form data
+      // Add slug and ensure content is up-to-date in FormData
       formData.set('slug', slug);
+      formData.set('content', content); // Make sure latest content state is submitted
       
       if (isEditMode && postId) {
         // Update existing post
@@ -172,14 +181,54 @@ export default function PostFormPage() {
           <label htmlFor="content" className="block text-sm font-medium mb-1">
             Content
           </label>
-          <textarea
-            id="content"
-            name="content"
-            rows={10}
-            defaultValue={post?.content || ''}
-            className="w-full px-3 py-2 border rounded-md"
-            required
-          ></textarea>
+          
+          {/* Tab Buttons */}
+          <div className="flex border-b mb-2">
+            <button
+              type="button"
+              onClick={() => setActiveTab('markdown')}
+              className={`px-4 py-2 text-sm font-medium rounded-t-md ${
+                activeTab === 'markdown' 
+                  ? 'border-t border-l border-r border-b-0 bg-white' 
+                  : 'text-gray-500 hover:text-gray-700 border border-transparent border-b-gray-200'
+              }`}
+            >
+              Markdown
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab('preview')}
+              className={`px-4 py-2 text-sm font-medium rounded-t-md ${
+                activeTab === 'preview' 
+                  ? 'border-t border-l border-r border-b-0 bg-white' 
+                  : 'text-gray-500 hover:text-gray-700 border border-transparent border-b-gray-200'
+              }`}
+            >
+              Preview
+            </button>
+            {/* Fill remaining space of the bottom border */}
+             <div className="flex-grow border-b"></div>
+          </div>
+
+          {/* Conditional Content Area */}
+          <div className="border border-t-0 p-1 rounded-b-md"> 
+            {activeTab === 'markdown' && (
+              <textarea
+                id="content"
+                name="content" // Keep name for FormData
+                rows={15} // Increased rows a bit
+                value={content} // Use state value
+                onChange={handleContentChange} // Update state on change
+                className="w-full px-3 py-2 border-none rounded-md focus:ring-0 focus:outline-none" // Removed border here
+                required
+              ></textarea>
+            )}
+            {activeTab === 'preview' && (
+              <div className="prose max-w-none p-3 min-h-[300px] bg-gray-50 rounded-b-md list-decimal h3:text-2xl h3:font-bold"> 
+                <ReactMarkdown>{content}</ReactMarkdown>
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="flex items-center">
