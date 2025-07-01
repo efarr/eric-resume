@@ -2,7 +2,19 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Github, Linkedin, Mail, ArrowRight, ExternalLink } from "lucide-react";
+import {
+  Github,
+  Linkedin,
+  Mail,
+  ArrowRight,
+  ExternalLink,
+  Code,
+  Users,
+  Zap,
+  Award,
+  Target,
+  Lightbulb,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -90,44 +102,52 @@ export default function Home() {
       <main className="flex-1">
         <section
           id="hero"
-          className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24 md:py-32"
+          className="relative overflow-hidden bg-gradient-to-br from-background via-background to-muted/30"
         >
-          <div className="grid gap-8 md:grid-cols-2 md:gap-12">
-            <div className="flex flex-col justify-center space-y-4">
-              <div className="space-y-2">
-                <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl">
-                  Eric Farr
-                </h1>
-                <p className="text-xl text-muted-foreground">
-                  Chief Technology Officer & Technology Leader
+          <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+          <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24 md:py-32 relative">
+            <div className="grid gap-8 md:grid-cols-2 md:gap-12 items-center">
+              <div className="flex flex-col justify-center space-y-6 animate-in fade-in slide-in-from-left duration-1000">
+                <div className="space-y-4">
+                  <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+                    Eric Farr
+                  </h1>
+                  <p className="text-xl md:text-2xl text-muted-foreground font-medium">
+                    Chief Technology Officer & Technology Leader
+                  </p>
+                </div>
+                <p className="max-w-[600px] text-muted-foreground md:text-xl leading-relaxed">
+                  Creating enterprise value by building empowered product teams
+                  that deliver value through modern serverless and cloud native
+                  technologies powered by AI.
                 </p>
+                <div className="flex flex-col gap-3 min-[400px]:flex-row">
+                  <Link href="#contact">
+                    <Button size="lg" className="group">
+                      Get in touch
+                      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </Button>
+                  </Link>
+                  <Link href="#experience">
+                    <Button variant="outline" size="lg">
+                      View my experience
+                    </Button>
+                  </Link>
+                </div>
               </div>
-              <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                Creating enterprise value by building empowered product teams
-                that deliver value through modern serverless and cloud native
-                technologies powered by AI.
-              </p>
-              <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                <Link href="#contact">
-                  <Button>
-                    Get in touch
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
-                <Link href="#experience">
-                  <Button variant="outline">View my experience</Button>
-                </Link>
-              </div>
-            </div>
-            <div className="flex items-center justify-center">
-              <div className="relative h-[350px] w-[350px] overflow-hidden rounded-full border-4 border-background bg-muted">
-                <Image
-                  src="/HeadshotOnWhiteSmallSquare.png?height=350&width=350"
-                  alt="Eric Farr"
-                  fill
-                  className="object-cover"
-                  priority
-                />
+              <div className="flex items-center justify-center animate-in fade-in slide-in-from-right duration-1000 delay-300">
+                <div className="relative">
+                  <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-full blur-2xl"></div>
+                  <div className="relative h-[350px] w-[350px] overflow-hidden rounded-full border-4 border-background bg-muted shadow-2xl">
+                    <Image
+                      src="/HeadshotOnWhiteSmallSquare.png?height=350&width=350"
+                      alt="Eric Farr"
+                      fill
+                      className="object-cover"
+                      priority
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -278,9 +298,14 @@ export default function Home() {
           </div>
 
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 mx-auto max-w-5xl">
-            <Card>
+            <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
               <CardHeader>
-                <CardTitle>Technical Leadership</CardTitle>
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-primary/10 text-primary">
+                    <Target className="h-6 w-6" />
+                  </div>
+                  <CardTitle>Technical Leadership</CardTitle>
+                </div>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-wrap gap-2">
@@ -294,9 +319,14 @@ export default function Home() {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
               <CardHeader>
-                <CardTitle>Team Leadership</CardTitle>
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-primary/10 text-primary">
+                    <Users className="h-6 w-6" />
+                  </div>
+                  <CardTitle>Team Leadership</CardTitle>
+                </div>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-wrap gap-2">
@@ -309,9 +339,14 @@ export default function Home() {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
               <CardHeader>
-                <CardTitle>Artificial Intelligence</CardTitle>
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-primary/10 text-primary">
+                    <Lightbulb className="h-6 w-6" />
+                  </div>
+                  <CardTitle>Artificial Intelligence</CardTitle>
+                </div>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-wrap gap-2">
@@ -324,9 +359,14 @@ export default function Home() {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
               <CardHeader>
-                <CardTitle>Programming Languages</CardTitle>
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-primary/10 text-primary">
+                    <Code className="h-6 w-6" />
+                  </div>
+                  <CardTitle>Programming Languages</CardTitle>
+                </div>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-wrap gap-2">
@@ -340,9 +380,14 @@ export default function Home() {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
               <CardHeader>
-                <CardTitle>Technologies</CardTitle>
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-primary/10 text-primary">
+                    <Zap className="h-6 w-6" />
+                  </div>
+                  <CardTitle>Technologies</CardTitle>
+                </div>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-wrap gap-2">
@@ -356,9 +401,14 @@ export default function Home() {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
               <CardHeader>
-                <CardTitle>Databases & Data</CardTitle>
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-primary/10 text-primary">
+                    <Award className="h-6 w-6" />
+                  </div>
+                  <CardTitle>Databases & Data</CardTitle>
+                </div>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-wrap gap-2">
@@ -476,9 +526,9 @@ export default function Home() {
           </div>
 
           <div className="mx-auto grid max-w-3xl gap-8 md:grid-cols-3">
-            <Card className="text-center">
+            <Card className="text-center group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
               <CardHeader>
-                <div className="mx-auto">
+                <div className="mx-auto p-3 rounded-full bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
                   <Mail className="h-10 w-10" />
                 </div>
                 <CardTitle className="mt-4">Email</CardTitle>
@@ -488,14 +538,16 @@ export default function Home() {
               </CardContent>
               <CardFooter className="flex justify-center">
                 <Link href="mailto:eric@farrnet.com">
-                  <Button>Send Email</Button>
+                  <Button className="group-hover:shadow-md transition-shadow">
+                    Send Email
+                  </Button>
                 </Link>
               </CardFooter>
             </Card>
 
-            <Card className="text-center">
+            <Card className="text-center group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
               <CardHeader>
-                <div className="mx-auto">
+                <div className="mx-auto p-3 rounded-full bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
                   <Linkedin className="h-10 w-10" />
                 </div>
                 <CardTitle className="mt-4">LinkedIn</CardTitle>
@@ -509,14 +561,16 @@ export default function Home() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <Button>View Profile</Button>
+                  <Button className="group-hover:shadow-md transition-shadow">
+                    View Profile
+                  </Button>
                 </Link>
               </CardFooter>
             </Card>
 
-            <Card className="text-center">
+            <Card className="text-center group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
               <CardHeader>
-                <div className="mx-auto">
+                <div className="mx-auto p-3 rounded-full bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
                   <Github className="h-10 w-10" />
                 </div>
                 <CardTitle className="mt-4">GitHub</CardTitle>
@@ -530,7 +584,9 @@ export default function Home() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <Button>View Projects</Button>
+                  <Button className="group-hover:shadow-md transition-shadow">
+                    View Projects
+                  </Button>
                 </Link>
               </CardFooter>
             </Card>
