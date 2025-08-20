@@ -216,8 +216,17 @@ export default function Home() {
                     Migrated SaaS operations from proprietary data center to AWS
                   </li>
                   <li>
-                    Harnessed serverless technologies and generative AI to
-                    deliver first release of new flagship product in 11 weeks
+                    Delivered first release of an AI-driven{" "}
+                    <a
+                      href="https://www.complianceandrisks.com/sustainability/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-primary hover:text-primary/80 underline underline-offset-4 transition-colors"
+                    >
+                      replacement
+                    </a>{" "}
+                    of core platform, built with AI on Serverless technologies
+                    in 9 months.
                   </li>
                 </ul>
               </CardContent>

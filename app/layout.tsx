@@ -2,6 +2,7 @@ import "./globals.css";
 import type React from "react";
 import { inter } from "@/lib/fonts";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata = {
   title: "Eric Farr | Chief Technology Officer",
@@ -16,11 +17,16 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} antialiased`}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           {children}
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
 }
-
